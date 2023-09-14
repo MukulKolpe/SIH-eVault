@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import WagmiProvider from "../utils/wagmiprovider";
 import Navbar from "@/components/Navbar/Navbar";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -26,9 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const theme = extendTheme({ colors, config });
 
   return (
-    <ChakraProvider theme={theme}>
-      <Navbar />
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <WagmiProvider>
+      <ChakraProvider theme={theme}>
+        <Navbar />
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </WagmiProvider>
   );
 }
