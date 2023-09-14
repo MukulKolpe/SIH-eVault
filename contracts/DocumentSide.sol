@@ -12,6 +12,7 @@ contract DocumentSide is UserSide{
         bool approval2;
         bool finalApproval;
         uint256 docOwner;
+        string caseNumber;
     }
 
     address public docAdmin;
@@ -19,6 +20,10 @@ contract DocumentSide is UserSide{
     mapping (uint256=>Document) public docIdtoDocument;
     mapping (uint256=> uint256[]) public docIdtoWitnessArray;
     mapping (uint256=> uint256[]) public docIdtoViewAccessArray;
+    mapping (uint256=> uint256[]) public userIdtodocIdWitness;
+    mapping (uint256=> uint256[]) public userIdtodocIdViewAccess;
+    mapping (string=> uint256[]) public caseNumbertoDocId;
+
 
     constructor(){
         userId++;
@@ -29,14 +34,21 @@ contract DocumentSide is UserSide{
     
 
     // Normal users and unverfied users cannot upload
-    function uploadDocument(string memory _docTitle,string memory _docSubject,string memory _ipfsHash,uint256 _userId,uint256[] memory _witnesses,uint256 _docOwner,uint256[] memory _viewAccess)public{
+    function uploadDocument(string memory _docTitle,string memory _docSubject,string memory _ipfsHash,uint256 _userId,uint256[] memory _witnesses,uint256 _docOwner,uint256[] memory _viewAccess,string memory _caseNumber)public{
         User memory u1 = userIdtoUser[_userId];
         require(u1.role != 1,"Only Lawyers, Judge and Governmnet officials can upload documents");
         require(u1.isVerified == true,"Only Verified user can upload");
-        Document memory d1 = Document(_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner);
+        Document memory d1 = Document(_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner,_caseNumber);
         docIdtoWitnessArray[docId] = _witnesses;
         docIdtoViewAccessArray[docId] = _viewAccess;
+        for(uint256 i = 0;i < _witnesses.length;i++){
+            userIdtodocIdWitness[_witnesses[i]].push(docId);
+        }
+        for(uint256 i = 0;i < _viewAccess.length;i++){
+            userIdtodocIdViewAccess[_viewAccess[i]].push(docId);
+        }
         docIdtoDocument[docId] = d1;
+        caseNumbertoDocId[_caseNumber].push(docId);
         docId++; 
     }
 
@@ -55,6 +67,20 @@ contract DocumentSide is UserSide{
             docIdtoWitnessArray[_docId].pop();
             if(docIdtoWitnessArray[_docId].length == 0){
                 docIdtoDocument[_docId].approval1 = true;
+            }
+
+            //remove document from user's array
+            uint256 pos2 = 0;
+            bool signal2 = false;
+            for(uint256 i = 0;i < userIdtodocIdWitness[_userId].length;i++){
+                if(_docId == userIdtodocIdWitness[_userId][i]){
+                    pos2 = i;
+                    signal2 = true;
+                }
+            }
+            if(signal2){
+                userIdtodocIdWitness[_userId][pos2] = userIdtodocIdWitness[_userId][userIdtodocIdWitness[_userId].length-1];
+                userIdtodocIdWitness[_userId].pop();
             }
         }
     }
@@ -81,6 +107,7 @@ contract DocumentSide is UserSide{
             }
             require(!s1,"User already has the view access");
             docIdtoViewAccessArray[_docId].push(tempId);
+            userIdtodocIdViewAccess[tempId].push(_docId);
         }
         else{
             // signal1 == 0 -> remove user from view access array
@@ -97,6 +124,17 @@ contract DocumentSide is UserSide{
             require(s1,"No user with access found to remove");
             docIdtoViewAccessArray[_docId][pos] = docIdtoViewAccessArray[_docId][docIdtoViewAccessArray[_docId].length-1];
             docIdtoViewAccessArray[_docId].pop(); 
+            bool s2 = false;
+            uint256 pos2 = 0;
+            for(uint256 i = 0;i < userIdtodocIdViewAccess[tempId].length;i++){
+                if(_docId == userIdtodocIdViewAccess[tempId][i]){
+                    s2 = true;
+                    pos2 = i;
+                    break;
+                }
+            }
+            userIdtodocIdViewAccess[tempId][pos2] = userIdtodocIdViewAccess[tempId][userIdtodocIdViewAccess[tempId].length-1];
+            userIdtodocIdViewAccess[tempId].pop();
         }
     }
 
