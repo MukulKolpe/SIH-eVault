@@ -1,6 +1,10 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { ethers } from "ethers";
+import { ParticleProvider } from "@particle-network/provider";
+import { useSigner } from "wagmi";
+import documentabi from "../../utils/documentsideabi.json";
 import {
   Progress,
   Text,
@@ -548,7 +552,58 @@ export default function Multistep() {
   const [degree, setDegree] = useState();
   const [license, setLicense] = useState("");
 
-  console.log(degree);
+  const handleSubmit = async () => {
+    //or get accounts with particleProvider
+    const particleProvider = new ParticleProvider(particle.auth);
+    const accounts = await particleProvider.request({ method: "eth_accounts" });
+    const ethersProvider = new ethers.providers.Web3Provider(
+      particleProvider,
+      "any"
+    );
+    const signer = ethersProvider.getSigner();
+
+    const contract = new ethers.Contract(
+      "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+      documentabi,
+      signer
+    );
+
+    console.log(contract);
+
+    let finalrole = 0;
+    if (role === "Lawyer") {
+      finalrole = 2;
+    } else if (role === "Judge") {
+      finalrole = 3;
+    } else if (role === "Other") {
+      finalrole = 4;
+    }
+
+    const tx = contract.createUser(
+      name,
+      profile,
+      dob,
+      accounts[0],
+      license,
+      adhar,
+      degree,
+      gender,
+      email,
+      finalrole
+    );
+
+    console.log(tx);
+
+    // toast({
+    //   title: "Submission Received",
+    //   description:
+    //     "Congratulations 🎉 your details are submitted, we'll get back to you soon!",
+    //   status: "success",
+    //   duration: 3000,
+    //   isClosable: true,
+    //   position: "top-right",
+    // });
+  };
 
   return (
     <>
@@ -626,13 +681,7 @@ export default function Multistep() {
                 colorScheme="red"
                 variant="solid"
                 onClick={() => {
-                  toast({
-                    title: "Account created.",
-                    description: "We've created your account for you.",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  });
+                  handleSubmit();
                 }}
               >
                 Submit
