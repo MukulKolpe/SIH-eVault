@@ -553,46 +553,85 @@ export default function Multistep() {
   const [license, setLicense] = useState("");
 
   const handleSubmit = async () => {
-    //or get accounts with particleProvider
-    const particleProvider = new ParticleProvider(particle.auth);
-    const accounts = await particleProvider.request({ method: "eth_accounts" });
-    const ethersProvider = new ethers.providers.Web3Provider(
-      particleProvider,
-      "any"
-    );
-    const signer = ethersProvider.getSigner();
+    if (window.ethereum._state.accounts.length !== 0) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        documentabi,
+        signer
+      );
+      const accounts = await provider.listAccounts();
 
-    const contract = new ethers.Contract(
-      "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
-      documentabi,
-      signer
-    );
+      console.log(contract);
 
-    console.log(contract);
+      let finalrole = 0;
+      if (role === "Lawyer") {
+        finalrole = 2;
+      } else if (role === "Judge") {
+        finalrole = 3;
+      } else if (role === "Other") {
+        finalrole = 4;
+      }
 
-    let finalrole = 0;
-    if (role === "Lawyer") {
-      finalrole = 2;
-    } else if (role === "Judge") {
-      finalrole = 3;
-    } else if (role === "Other") {
-      finalrole = 4;
+      const tx = contract.createUser(
+        name,
+        profile,
+        dob,
+        accounts[0],
+        license,
+        adhar,
+        degree,
+        gender,
+        email,
+        finalrole
+      );
+
+      console.log(tx);
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth);
+      const accounts = await particleProvider.request({
+        method: "eth_accounts",
+      });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
+      );
+      const signer = ethersProvider.getSigner();
+
+      const contract = new ethers.Contract(
+        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        documentabi,
+        signer
+      );
+
+      console.log(contract);
+
+      let finalrole = 0;
+      if (role === "Lawyer") {
+        finalrole = 2;
+      } else if (role === "Judge") {
+        finalrole = 3;
+      } else if (role === "Other") {
+        finalrole = 4;
+      }
+
+      const tx = contract.createUser(
+        name,
+        profile,
+        dob,
+        accounts[0],
+        license,
+        adhar,
+        degree,
+        gender,
+        email,
+        finalrole
+      );
+
+      console.log(tx);
     }
-
-    const tx = contract.createUser(
-      name,
-      profile,
-      dob,
-      accounts[0],
-      license,
-      adhar,
-      degree,
-      gender,
-      email,
-      finalrole
-    );
-
-    console.log(tx);
+    //or get accounts with particleProvider
 
     // toast({
     //   title: "Submission Received",
