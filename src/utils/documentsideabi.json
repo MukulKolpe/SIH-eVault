@@ -21,6 +21,30 @@
     "inputs": [
       {
         "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "caseNumbertoDocId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
         "name": "_email",
         "type": "string"
       }
@@ -169,6 +193,11 @@
         "internalType": "uint256",
         "name": "docOwner",
         "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "caseNumber",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -312,6 +341,11 @@
         "internalType": "uint256[]",
         "name": "_viewAccess",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "string",
+        "name": "_caseNumber",
+        "type": "string"
       }
     ],
     "name": "uploadDocument",
@@ -521,6 +555,54 @@
       {
         "internalType": "uint256",
         "name": "role",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "userIdtodocIdViewAccess",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "userIdtodocIdWitness",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
