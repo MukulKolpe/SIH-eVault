@@ -20,6 +20,7 @@ import { HamburgerIcon, CloseIcon, AddIcon } from "@chakra-ui/icons";
 // import { generateRandomAvatarOptions } from "../../utils/avatar";
 // import { px } from "framer-motion";
 import { Link } from "@chakra-ui/next-js";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,6 +88,7 @@ export default function Navbar() {
                     Admin
                   </Button>
                 </Link>
+                <ConnectButton />
               </HStack>
             </div>
 
