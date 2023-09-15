@@ -557,7 +557,7 @@ export default function Multistep() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        "0xF3b144eFbdE47fFAE49AbcB23CB4F1c5B08F7c73",
         documentabi,
         signer
       );
@@ -600,7 +600,7 @@ export default function Multistep() {
       const signer = ethersProvider.getSigner();
 
       const contract = new ethers.Contract(
-        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        "0xF3b144eFbdE47fFAE49AbcB23CB4F1c5B08F7c73",
         documentabi,
         signer
       );
