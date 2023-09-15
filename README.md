@@ -1,5 +1,5 @@
 # Deployed Contract Addresses: 
-DocumentSide.sol : - ```0x4b06F4fDc5bb59BB7ffE2371ba3cf07F11466cFC```
+DocumentSide.sol : - ```0x6c4e8Cb86f2bEbE4f5Ef8a7E748d695a36ef9A6E```
 
 
 
