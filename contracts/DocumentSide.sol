@@ -90,7 +90,7 @@ contract DocumentSide is UserSide{
         Document memory d1 = docIdtoDocument[_docId];
         require(d1.approval1 , "The documents should be first approved by witnesses and other stakeholders");
         docIdtoDocument[_docId].approval2 = true;
-        docIdtoDocument[_docId].docOwner = 0;
+        docIdtoDocument[_docId].docOwner = 1;
         docIdtoDocument[_docId].finalApproval = true;
     }      
 
