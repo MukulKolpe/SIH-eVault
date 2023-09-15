@@ -10,6 +10,7 @@ import {
   VisuallyHidden,
   chakra,
   useColorModeValue,
+  Center,
 } from '@chakra-ui/react'
 // import { FaTwitter, FaYoutube, FaInstagram } from 'react-icons/fa'
 
@@ -58,60 +59,6 @@ export default function Footer() {
     <Box
       bg={useColorModeValue('gray.50', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}>
-      <Container as={Stack} maxW={'6xl'} py={10}>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
-          <Stack align={'flex-start'}>
-            <ListHeader>Company</ListHeader>
-            <Box as="a" href={'#'}>
-              About Us
-            </Box>
-            <Box as="a" href={'#'}>
-              Blog
-            </Box>
-            <Box as="a" href={'#'}>
-              Careers
-            </Box>
-            <Box as="a" href={'#'}>
-              Contact Us
-            </Box>
-          </Stack>
-
-          <Stack align={'flex-start'}>
-            <ListHeader>Support</ListHeader>
-            <Box as="a" href={'#'}>
-              Help Center
-            </Box>
-            <Box as="a" href={'#'}>
-              Safety Center
-            </Box>
-            <Box as="a" href={'#'}>
-              Community Guidelines
-            </Box>
-          </Stack>
-
-          <Stack align={'flex-start'}>
-            <ListHeader>Legal</ListHeader>
-            <Box as="a" href={'#'}>
-              Cookies Policy
-            </Box>
-            <Box as="a" href={'#'}>
-              Privacy Policy
-            </Box>
-            <Box as="a" href={'#'}>
-              Terms of Service
-            </Box>
-            <Box as="a" href={'#'}>
-              Law Enforcement
-            </Box>
-          </Stack>
-
-          <Stack align={'flex-start'}>
-            <ListHeader>Install App</ListHeader>
-            {/* <AppStoreBadge /> */}
-            {/* <PlayStoreBadge /> */}
-          </Stack>
-        </SimpleGrid>
-      </Container>
 
       <Box
         borderTopWidth={1}
@@ -125,18 +72,13 @@ export default function Footer() {
           spacing={4}
           justify={{ md: 'space-between' }}
           align={{ md: 'center' }}>
-          {/* <Stack direction={'row'} spacing={6}>
-            <SocialButton label={'Twitter'} href={'#'}>
-              <FaTwitter />
-            </SocialButton>
-            <SocialButton label={'YouTube'} href={'#'}>
-              <FaYoutube />
-            </SocialButton>
-            <SocialButton label={'Instagram'} href={'#'}>
-              <FaInstagram />
-            </SocialButton>
-          </Stack> */}
+
         </Container>
+            <Center>
+              <Text mt={"-1.5%"} mb={"1.5%"}>
+              Made with ❤️ by Localhost
+              </Text>
+            </Center>
       </Box>
     </Box>
   )
