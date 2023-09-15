@@ -88,7 +88,7 @@ const Form1 = ({ getEmail, getName, getAdhar, getRole }) => {
           <Input
             pr="4.5rem"
             placeholder="Enter Aadhar Card Number"
-            onChange={(e) => handleAdhar(e)}
+            onChange={(e) => handleAdhar(e.target.value)}
           />
         </InputGroup>
         <FormHelperText>
