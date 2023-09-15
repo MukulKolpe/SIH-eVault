@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import WagmiProvider from "../utils/wagmiprovider";
 import Navbar from "@/components/Navbar/Navbar";
-
+import Footer from "@/components/Footer/Footer";
 export default function App({ Component, pageProps }: AppProps) {
   const colors = {
     brand: {
@@ -31,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <Navbar />
         <Component {...pageProps} />
+        <Footer />
       </ChakraProvider>
     </WagmiProvider>
   );
