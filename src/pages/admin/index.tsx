@@ -19,9 +19,9 @@ import { ethers } from "ethers";
 import { ParticleProvider } from "@particle-network/provider";
 import { useSigner } from "wagmi";
 import documentabi from "../../utils/documentsideabi.json";
-import { Spinner } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import CardComponent from "@/components/CardComponent/CardComponent";
+import SpinnerComponent from "../../components/Spinner/Spinner";
 
 const Admin = () => {
   const [password, setPassword] = useState("");
@@ -75,33 +75,7 @@ const Admin = () => {
 
   if (loader) {
     return (
-      <Flex
-        align={"center"}
-        justify={"center"}
-        bg={useColorModeValue("gray.50", "gray.800")}
-        flexDir={"row"}
-        justifyContent={"space-evenly"}
-      >
-        <Stack>
-          <Stack
-            spacing={4}
-            w={"full"}
-            maxW={"md"}
-            rounded={"xl"}
-            boxShadow={"lg"}
-            p={6}
-            my={12}
-          >
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-          </Stack>
-        </Stack>
-      </Flex>
+      <SpinnerComponent/>
     );
   }
 
