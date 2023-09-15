@@ -41,7 +41,7 @@ const CardComponent = ({ sysUser, signal }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        "0xF3b144eFbdE47fFAE49AbcB23CB4F1c5B08F7c73",
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
         documentabi,
         signer
       );
@@ -155,7 +155,12 @@ const CardComponent = ({ sysUser, signal }) => {
                 <ModalHeader>Degree</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <img src={sysUser.degreeURL}></img>
+                  {sysUser.role != 1 ? (
+                    <img src={sysUser.degreeURL}></img>
+                  ):(
+                    <Text>User and other 3rd parties do not need a degree</Text>
+                  )}
+                  
                 </ModalBody>
                 <ModalFooter>
                   <Button onClick={onClose}>Close</Button>
