@@ -8,13 +8,15 @@ import {
   FormLabel,
   Input,
   Button,
+  Stack,
 } from '@chakra-ui/react';
-import { useToast } from '@chakra-ui/toast'
+import { useToast } from '@chakra-ui/toast';
+
 function Profile() {
   const toast = useToast();
 
   return (
-    <>
+    <Box p={4}>
       <Heading>
         <Center>My Profile</Center>
       </Heading>
@@ -35,77 +37,75 @@ function Profile() {
       </Center>
 
       <Center mt={4}>
-        <Box w="80%">
+        <Box w="90%">
           <form>
-            <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-              <FormControl mt={4} isRequired width="30%">
+            <Stack
+              direction={['column', 'column', 'row']}
+              spacing={4}
+              justifyContent="space-between"
+            >
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Name</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="John Doe"
-                  rounded="md" 
-                />
+                <Input type="text" placeholder="John Doe" rounded="md" />
               </FormControl>
 
-              <FormControl mt={4} isRequired width="30%">
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Image URL</FormLabel>
                 <Input
                   type="url"
                   placeholder="https://example.com/image.jpg"
-                  rounded="md" 
+                  rounded="md"
                 />
               </FormControl>
 
-              <FormControl mt={4} isRequired width="30%">
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Date of Birth</FormLabel>
                 <Input
                   type="date"
                   placeholder="YYYY-MM-DD"
-                  rounded="md" 
+                  rounded="md"
                 />
               </FormControl>
-            </Box>
+            </Stack>
 
-            <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-              <FormControl mt={4} isRequired width="30%">
+            <Stack
+              direction={['column', 'column', 'row']}
+              spacing={4}
+              justifyContent="space-between"
+              mt={4}
+            >
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">User Address</FormLabel>
                 <Input
                   type="text"
                   placeholder="123 Main St, City, Country"
-                  rounded="md" 
+                  rounded="md"
                 />
               </FormControl>
 
-              <FormControl mt={4} isRequired width="30%">
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">License Number</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="LIC12345"
-                  rounded="md" 
-                />
+                <Input type="text" placeholder="LIC12345" rounded="md" />
               </FormControl>
 
-              <FormControl mt={4} isRequired width="30%">
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Aadhar Number</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="123456789012"
-                  rounded="md" 
-                />
+                <Input type="text" placeholder="123456789012" rounded="md" />
               </FormControl>
-            </Box>
+            </Stack>
 
-            <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-              <FormControl mt={4} isRequired width="30%">
+            <Stack
+              direction={['column', 'column', 'row']}
+              spacing={4}
+              justifyContent="space-between"
+              mt={4}
+            >
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Gender</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Male"
-                  rounded="md" 
-                />
+                <Input type="text" placeholder="Male" rounded="md" />
               </FormControl>
 
-              <FormControl mt={4} isRequired width="30%">
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Email</FormLabel>
                 <Input
                   type="email"
@@ -113,21 +113,22 @@ function Profile() {
                   rounded="md"
                 />
               </FormControl>
-              <FormControl mt={4} isRequired width="30%">
+
+              <FormControl isRequired>
                 <FormLabel fontSize="sm">Degree URL</FormLabel>
                 <Input
                   type="text"
                   placeholder="https://example.com/image.jpg"
-                  rounded="md" 
+                  rounded="md"
                 />
               </FormControl>
-            </Box>
+            </Stack>
 
             <Center mt={7}>
               <Button
                 variant="solid"
-                width="25%"
-                backgroundColor="#0D74FF" 
+                width={['100%', '100%', '25%']}
+                backgroundColor="#0D74FF"
                 color="white"
                 _hover={{}}
                 rounded="md"
@@ -147,7 +148,7 @@ function Profile() {
           </form>
         </Box>
       </Center>
-    </>
+    </Box>
   );
 }
 
