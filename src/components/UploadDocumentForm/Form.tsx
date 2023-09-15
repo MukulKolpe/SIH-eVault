@@ -31,12 +31,21 @@ import {
 } from "@chakra-ui/react";
 
 import { useToast } from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { ParticleProvider } from "@particle-network/provider";
+import { useSigner } from "wagmi";
+import documentabi from "../../utils/documentsideabi.json";
 
 const UploadDocumentForm = () => {
   const toast = useToast();
   const inputRef = useRef(null);
   const [displayDocument, setDisplayDocument] = useState();
   const [ipfsUrl, setIpfsUrl] = useState("");
+  const [documentName, setDocumentName] = useState("");
+  const [documentDescription, setDocumentDescription] = useState("");
+  const [documentNumber, setDocumentNumber] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+
   const changeHandler = () => {
     setDisplayDocument(inputRef.current?.files[0]);
   };
@@ -80,6 +89,174 @@ const UploadDocumentForm = () => {
       })
       .catch((err) => console.error(err));
   };
+  const handleSubmit = async () => {
+    if (window.ethereum._state.accounts.length !== 0) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        signer
+      );
+      const accounts = await provider.listAccounts();
+
+      const userid = await contract.userAddresstoId(accounts[0]);
+
+      console.log(accounts[0]);
+      console.log(contract);
+      const tx = await contract.uploadDocument(
+        documentName,
+        documentDescription,
+        ipfsUrl,
+        userid,
+        witnessArray,
+        userid,
+        witnessArray,
+        documentNumber
+      );
+      console.log(tx);
+      await tx.wait();
+      toast({
+        title: "Document Uploaded.",
+        description: "Congratulations 🎉 ",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth);
+      const accounts = await particleProvider.request({
+        method: "eth_accounts",
+      });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
+      );
+      const signer = ethersProvider.getSigner();
+
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        signer
+      );
+
+      console.log(contract);
+      const userid = await contract.userAddresstoId(accounts[0]);
+      const tx = await contract.uploadDocument(
+        documentName,
+        documentDescription,
+        ipfsUrl,
+        userid,
+        witnessArray,
+        userid,
+        witnessArray,
+        documentNumber
+      );
+      await tx.wait();
+      toast({
+        title: "Document Uploaded.",
+        description: "Congratulations 🎉 ",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+        position: "top-right",
+      });
+
+      console.log(tx);
+    }
+  };
+  const [inputFields, setInputFields] = useState([{ value: "" }]);
+
+  const handleAddField = () => {
+    const newInputFields = [...inputFields, { value: "" }];
+    setInputFields(newInputFields);
+  };
+
+  const handleInputChange = (index, event) => {
+    const newInputFields = [...inputFields];
+    newInputFields[index].value = event.target.value;
+    setInputFields(newInputFields);
+  };
+
+  const handleRemoveField = (index) => {
+    const newInputFields = [...inputFields];
+    newInputFields.splice(index, 1);
+    setInputFields(newInputFields);
+  };
+
+  //console.log(inputFields);
+  const [witnessArray, setWitnessArray] = useState([]);
+  console.log(window.ethereum._state.accounts.length !== 0);
+
+  const createWitnessArray = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    let contract;
+    if (window.ethereum._state.accounts.length !== 0) {
+      contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        signer
+      );
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth);
+      const accounts = await particleProvider.request({
+        method: "eth_accounts",
+      });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
+      );
+      const pSigner = ethersProvider.getSigner();
+
+      contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        pSigner
+      );
+    }
+
+    console.log(contract);
+    // iterate over inputFields and create an array of witnesses
+    const witnessList = [];
+    let s1 = 0;
+
+    for (let i = 0; i < inputFields.length; i++) {
+      let id = await contract.userEmailtoId(inputFields[i].value);
+      if (id.toNumber() === 0) {
+        s1 = 1;
+
+        break;
+      }
+      witnessList.push(id.toNumber());
+    }
+
+    if (s1 === 1) {
+      toast({
+        title: "Witnesses not found.",
+        description: "Please enter valid email address ",
+        status: "error",
+        duration: 1000,
+        isClosable: true,
+        position: "top-right",
+      });
+    } else {
+      toast({
+        title: "Witnesses added.",
+        description: "Witnesses added successfully ",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+
+    setWitnessArray(witnessList);
+
+    // console.log(setWitnessArray(witnessList));
+  };
+  console.log(witnessArray);
   return (
     <>
       <Box
@@ -99,7 +276,12 @@ const UploadDocumentForm = () => {
             <FormLabel htmlFor="name" fontWeight={"normal"}>
               Document Name
             </FormLabel>
-            <Input id="name" placeholder="Name" autoComplete="name" />
+            <Input
+              id="name"
+              placeholder="Name"
+              autoComplete="name"
+              onChange={(e) => setDocumentName(e.target.value)}
+            />
           </FormControl>
           <FormControl id="email" mt={1}>
             <FormLabel
@@ -120,6 +302,7 @@ const UploadDocumentForm = () => {
               fontSize={{
                 sm: "sm",
               }}
+              onChange={(e) => setDocumentDescription(e.target.value)}
             />
             <FormHelperText>
               Brief description about the document. URLs are hyperlinked.
@@ -179,7 +362,6 @@ const UploadDocumentForm = () => {
                   alignItems="baseline"
                 >
                   <chakra.label
-                    htmlFor="file-upload"
                     cursor="pointer"
                     rounded="md"
                     fontSize="md"
@@ -226,14 +408,61 @@ const UploadDocumentForm = () => {
 
           <FormControl mr="2%">
             <FormLabel htmlFor="name" fontWeight={"normal"}>
-              Document Number
+              Case Number
             </FormLabel>
             <Input
               id="caseNumber"
-              placeholder="Five Digit Document Number"
+              placeholder="Six Digit Document Number"
               minLength={6}
               maxLength={6}
+              autoComplete="caseNumber"
+              onChange={(e) => setDocumentNumber(e.target.value)}
             />
+            <FormHelperText>
+              This will help in retrival of the document.
+            </FormHelperText>
+          </FormControl>
+          <FormControl mt="2%">
+            <FormLabel htmlFor="email" fontWeight={"normal"}>
+              Client Email address
+            </FormLabel>
+            <Input
+              id="email"
+              type="email"
+              placeholder="client@gmail.com"
+              autoComplete="email"
+              onChange={(e) => setClientEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="name" fontWeight={"normal"}>
+              Witness Email Addresses
+            </FormLabel>
+
+            {inputFields.map((inputField, index) => (
+              <div key={index}>
+                <Flex mt={4}>
+                  <Input
+                    type="text"
+                    placeholder="Enter email address"
+                    value={inputField.value}
+                    onChange={(e) => handleInputChange(index, e)}
+                    mr={4}
+                  />
+                  <Button onClick={() => handleRemoveField(index)}>
+                    Remove
+                  </Button>
+                </Flex>
+              </div>
+            ))}
+            <Flex mt={6}>
+              <Button onClick={handleAddField} mr={4}>
+                Add Witness
+              </Button>
+              <Button onClick={createWitnessArray} ml={4}>
+                Confirm Witnesses
+              </Button>
+            </Flex>
           </FormControl>
         </SimpleGrid>
         <Button
@@ -243,6 +472,9 @@ const UploadDocumentForm = () => {
           w="10rem"
           colorScheme="purple"
           variant="solid"
+          onClick={() => {
+            handleSubmit();
+          }}
         >
           Submit Document
         </Button>
