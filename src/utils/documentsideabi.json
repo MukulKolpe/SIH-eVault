@@ -198,6 +198,11 @@
         "internalType": "string",
         "name": "caseNumber",
         "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "clientEmail",
+        "type": "string"
       }
     ],
     "stateMutability": "view",
@@ -241,6 +246,144 @@
       }
     ],
     "name": "docIdtoWitnessArray",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "docIdtoWitnessArray2",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_caseNum",
+        "type": "string"
+      }
+    ],
+    "name": "getCaseNumberArrayLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_docId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTotalWitnessArrayLengthbyDocId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_docId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getViewAccessLengthbyDocId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_userId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getViewAccessLengthforUser",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_docId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getWitnessArrayLengthbyDocId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_userId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getWitnessArrayLengthforUser",
     "outputs": [
       {
         "internalType": "uint256",
@@ -345,6 +488,11 @@
       {
         "internalType": "string",
         "name": "_caseNumber",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_clientEmail",
         "type": "string"
       }
     ],

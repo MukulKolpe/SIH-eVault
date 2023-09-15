@@ -13,12 +13,14 @@ contract DocumentSide is UserSide{
         bool finalApproval;
         uint256 docOwner;
         string caseNumber;
+        string clientEmail;
     }
 
     address public docAdmin;
     uint256 public docId = 0;
     mapping (uint256=>Document) public docIdtoDocument;
     mapping (uint256=> uint256[]) public docIdtoWitnessArray;
+    mapping (uint256=> uint256[]) public docIdtoWitnessArray2;
     mapping (uint256=> uint256[]) public docIdtoViewAccessArray;
     mapping (uint256=> uint256[]) public userIdtodocIdWitness;
     mapping (uint256=> uint256[]) public userIdtodocIdViewAccess;
@@ -34,12 +36,13 @@ contract DocumentSide is UserSide{
     
 
     // Normal users and unverfied users cannot upload
-    function uploadDocument(string memory _docTitle,string memory _docSubject,string memory _ipfsHash,uint256 _userId,uint256[] memory _witnesses,uint256 _docOwner,uint256[] memory _viewAccess,string memory _caseNumber)public{
+    function uploadDocument(string memory _docTitle,string memory _docSubject,string memory _ipfsHash,uint256 _userId,uint256[] memory _witnesses,uint256 _docOwner,uint256[] memory _viewAccess,string memory _caseNumber,string memory _clientEmail)public{
         User memory u1 = userIdtoUser[_userId];
         require(u1.role != 1,"Only Lawyers, Judge and Governmnet officials can upload documents");
         require(u1.isVerified == true,"Only Verified user can upload");
-        Document memory d1 = Document(_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner,_caseNumber);
+        Document memory d1 = Document(_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner,_caseNumber,_clientEmail);
         docIdtoWitnessArray[docId] = _witnesses;
+        docIdtoWitnessArray2[docId] = _witnesses;
         docIdtoViewAccessArray[docId] = _viewAccess;
         for(uint256 i = 0;i < _witnesses.length;i++){
             userIdtodocIdWitness[_witnesses[i]].push(docId);
@@ -146,5 +149,35 @@ contract DocumentSide is UserSide{
         else{
             return false;
         }
+    }
+
+    // function to get the length of userIdtodocIdWitness[_userId] length
+    function getWitnessArrayLengthforUser(uint256 _userId) public view returns(uint256){
+        return userIdtodocIdWitness[_userId].length;
+    }
+
+    // function to get the length of userIdtodocIdViewAccess[_userId] length
+    function getViewAccessLengthforUser(uint256 _userId) public view returns(uint256){
+        return userIdtodocIdViewAccess[_userId].length;
+    }
+
+    // function to get the length of caseNumbertoDocId[_caseNum] length
+    function getCaseNumberArrayLength(string memory _caseNum) public view returns(uint256){
+        return caseNumbertoDocId[_caseNum].length;
+    }
+
+    // function to get the length of docIdtoWitnessArray[_docId] length
+    function getWitnessArrayLengthbyDocId(uint256 _docId) public view returns(uint256){
+        return docIdtoWitnessArray[_docId].length;
+    }
+
+    // function to get the length of docIdtoViewAccessArray[_docId] length
+    function getViewAccessLengthbyDocId(uint256 _docId) public view returns(uint256){
+        return docIdtoViewAccessArray[_docId].length;
+    }
+
+    // function to get the length of docIdtoWitnessArray2[_docId] length
+    function getTotalWitnessArrayLengthbyDocId(uint256 _docId) public view returns(uint256){
+        return docIdtoWitnessArray2[_docId].length;
     }
 }
