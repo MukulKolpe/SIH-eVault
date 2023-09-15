@@ -129,6 +129,7 @@ const Form1 = ({ getEmail, getName, getAdhar, getRole }) => {
 };
 
 const Form2 = ({ getDob, getGender, getProfile }) => {
+  const toast = useToast();
   const inputRef = useRef(null);
   const [displayImage, setDisplayImage] = useState();
   const [ipfsUrl, setIpfsUrl] = useState("");
@@ -352,6 +353,7 @@ const Form2 = ({ getDob, getGender, getProfile }) => {
 };
 
 const Form3 = ({ getLicense, getDegree }) => {
+  const toast = useToast();
   const inputRef = useRef(null);
   const [displayImage, setDisplayImage] = useState();
   const [ipfsUrl, setIpfsUrl] = useState("");
