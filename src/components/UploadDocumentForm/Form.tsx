@@ -112,7 +112,8 @@ const UploadDocumentForm = () => {
         witnessArray,
         userid,
         witnessArray,
-        documentNumber
+        documentNumber,
+        clientEmail
       );
       console.log(tx);
       await tx.wait();
