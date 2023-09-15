@@ -1,4 +1,8 @@
 import React, { useState, useRef } from "react";
+import documentabi from "../../utils/documentsideabi.json";
+import { ParticleProvider } from "@particle-network/provider";
+
+import { ethers } from "ethers";
 import {
   Progress,
   Box,
@@ -34,9 +38,21 @@ import { useToast } from "@chakra-ui/react";
 import { stringify } from "querystring";
 import { Clicker_Script } from "next/font/google";
 
-const Form1 = () => {
+const Form1 = ({ getEmail, getName, getDob }) => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  const handleName = (e) => {
+    getName(e);
+  };
+
+  const handleEmail = (e) => {
+    getEmail(e);
+  };
+
+  const handleDob = (e) => {
+    getDob(e);
+  };
 
   return (
     <>
@@ -48,7 +64,12 @@ const Form1 = () => {
         <FormLabel htmlFor="name" fontWeight={"normal"}>
           Name
         </FormLabel>
-        <Input id="name" placeholder="Name" autoComplete="name" />
+        <Input
+          id="name"
+          placeholder="Name"
+          autoComplete="name"
+          onChange={(e) => handleName(e.target.value)}
+        />
       </FormControl>
 
       <FormControl mt="2%">
@@ -60,6 +81,7 @@ const Form1 = () => {
           type="email"
           placeholder="user@gmail.com"
           autoComplete="email"
+          onChange={(e) => handleEmail(e.target.value)}
         />
         <FormHelperText>We'll never share your email.</FormHelperText>
       </FormControl>
@@ -73,13 +95,14 @@ const Form1 = () => {
           size="md"
           type="date"
           id="datetime-local"
+          onChange={(e) => handleDob(e.target.value)}
         />
       </FormControl>
     </>
   );
 };
 
-const Form2 = () => {
+const Form2 = ({ getProfile }) => {
   const toast = useToast();
   const inputRef = useRef(null);
   const [displayImage, setDisplayImage] = useState();
@@ -127,6 +150,7 @@ const Form2 = () => {
       })
       .catch((err) => console.error(err));
   };
+  getProfile(ipfsUrl);
 
   return (
     <>
@@ -236,9 +260,17 @@ const Form2 = () => {
   );
 };
 
-const Form3 = () => {
+const Form3 = ({ getGender, getAdhar }) => {
   const toast = useToast();
   const inputRef = useRef(null);
+
+  const handleGender = (e) => {
+    getGender(e);
+  };
+
+  const handleAdhar = (e) => {
+    getAdhar(e);
+  };
 
   return (
     <>
@@ -268,6 +300,7 @@ const Form3 = () => {
             size="sm"
             w="full"
             rounded="md"
+            onChange={(e) => handleGender(e.target.value)}
           >
             <option>Male</option>
             <option>Female</option>
@@ -283,6 +316,7 @@ const Form3 = () => {
               <Input
                 id="aadhar-card"
                 placeholder="Enter your Aadhar card number"
+                onChange={(e) => handleAdhar(e.target.value)}
               />
             </FormControl>
           </Flex>
@@ -296,6 +330,79 @@ export default function Multistep() {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [adhar, setAdhar] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [profile, setProfile] = useState();
+  const [degree, setDegree] = useState();
+  const [license, setLicense] = useState("");
+
+  const handleSubmit = async () => {
+    if (window.ethereum._state.accounts.length !== 0) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        documentabi,
+        signer
+      );
+      const accounts = await provider.listAccounts();
+
+      console.log(contract);
+
+      const tx = contract.createUser(
+        name,
+        profile,
+        dob,
+        accounts[0],
+        "",
+        adhar,
+        "",
+        gender,
+        email,
+        1
+      );
+
+      console.log(tx);
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth);
+      const accounts = await particleProvider.request({
+        method: "eth_accounts",
+      });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
+      );
+      const signer = ethersProvider.getSigner();
+
+      const contract = new ethers.Contract(
+        "0xE28dceCd72874a9672fc6090E1381D73afB8Ebd1",
+        documentabi,
+        signer
+      );
+
+      console.log(contract);
+
+      const tx = contract.createUser(
+        name,
+        profile,
+        dob,
+        accounts[0],
+        "",
+        adhar,
+        "",
+        gender,
+        email,
+        1
+      );
+
+      console.log(tx);
+    }
+  };
+
+  console.log(adhar);
 
   return (
     <>
@@ -315,7 +422,20 @@ export default function Multistep() {
           mx="5%"
           isAnimated
         ></Progress>
-        {step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+        {step === 1 ? (
+          <Form1
+            getName={(q) => setName(q)}
+            getEmail={(q) => setEmail(q)}
+            getDob={(q) => setDob(q)}
+          />
+        ) : step === 2 ? (
+          <Form2 getProfile={(q) => setProfile(q)} />
+        ) : (
+          <Form3
+            getAdhar={(q) => setAdhar(q)}
+            getGender={(q) => setGender(q)}
+          />
+        )}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between">
             <Flex>
@@ -350,7 +470,14 @@ export default function Multistep() {
               </Button>
             </Flex>
             {step === 3 ? (
-              <Button w="7rem" colorScheme="red" variant="solid">
+              <Button
+                w="7rem"
+                colorScheme="red"
+                variant="solid"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
                 Submit
               </Button>
             ) : null}
