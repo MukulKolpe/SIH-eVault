@@ -42,6 +42,8 @@ contract UserSide{
 
     function createUser (string memory _name,string memory _imageURL,string memory _dob,address _userAddress,string memory _licenseNum,string memory _aadharNum,string memory _degreeURL,string memory _gender,string memory _email,uint256 _role) public {
         User memory u1 = User(_name,_imageURL,_dob,_userAddress,_licenseNum,_aadharNum,_degreeURL,false,_gender,_email,_role);
+        require(userEmailtoId[_email] == 0,"This email is already registered into the system");
+        require(userAddresstoId[_userAddress] == 0,"This wallet address is already registered into the system");
         userIdtoUser[userId] = u1;
         userEmailtoAddress[_email] = _userAddress;
         userAddresstoUser[_userAddress] = u1;
