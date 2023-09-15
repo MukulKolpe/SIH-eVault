@@ -187,7 +187,7 @@ const UploadDocumentForm = () => {
 
   //console.log(inputFields);
   const [witnessArray, setWitnessArray] = useState([]);
-  console.log(window.ethereum._state.accounts.length !== 0);
+  //console.log(window.ethereum._state.accounts.length !== 0);
 
   const createWitnessArray = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
