@@ -29,9 +29,17 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiProvider>
       <ChakraProvider theme={theme}>
-        <Navbar />
-        <Component {...pageProps} />
-        <Footer />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+          }}
+        >
+          <Navbar />
+          <Component {...pageProps} />
+          <Footer />
+        </div>
       </ChakraProvider>
     </WagmiProvider>
   );
