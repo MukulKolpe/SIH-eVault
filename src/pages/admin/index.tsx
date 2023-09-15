@@ -36,7 +36,7 @@ const Admin = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        "0xF3b144eFbdE47fFAE49AbcB23CB4F1c5B08F7c73",
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
         documentabi,
         signer
       );
@@ -74,9 +74,7 @@ const Admin = () => {
   }
 
   if (loader) {
-    return (
-      <SpinnerComponent/>
-    );
+    return <SpinnerComponent />;
   }
 
   if (!cards) {
@@ -150,6 +148,9 @@ const Admin = () => {
         <Tab>Verified</Tab>
         <Tab>Judges</Tab>
         <Tab>Lawyer</Tab>
+        <Tab>Officials</Tab>
+        <Tab> Other Users</Tab>
+
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -175,13 +176,15 @@ const Admin = () => {
             gap={4}
           >
             {sysUsers &&
-              sysUsers.filter((sysUser:any) => sysUser.isVerified == false).map((sysUser: any, index: any) => {
-                return (
-                  <GridItem rowSpan={1} colSpan={1}>
-                    <CardComponent sysUser={sysUser} signal={1} />
-                  </GridItem>
-                );
-              })}
+              sysUsers
+                .filter((sysUser: any) => sysUser.isVerified == false)
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={1} />
+                    </GridItem>
+                  );
+                })}
           </Grid>
         </TabPanel>
         <TabPanel>
@@ -191,13 +194,15 @@ const Admin = () => {
             gap={4}
           >
             {sysUsers &&
-              sysUsers.filter((sysUser:any) => sysUser.isVerified).map((sysUser: any, index: any) => {
-                return (
-                  <GridItem rowSpan={1} colSpan={1}>
-                    <CardComponent sysUser={sysUser} signal={0} />
-                  </GridItem>
-                );
-              })}
+              sysUsers
+                .filter((sysUser: any) => sysUser.isVerified)
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={0} />
+                    </GridItem>
+                  );
+                })}
           </Grid>
         </TabPanel>
         <TabPanel>
@@ -207,13 +212,15 @@ const Admin = () => {
             gap={4}
           >
             {sysUsers &&
-              sysUsers.filter((sysUser:any) => sysUser.role == 3).map((sysUser: any, index: any) => {
-                return (
-                  <GridItem rowSpan={1} colSpan={1}>
-                    <CardComponent sysUser={sysUser} signal={0} />
-                  </GridItem>
-                );
-              })}
+              sysUsers
+                .filter((sysUser: any) => (sysUser.role == 3 && sysUser.isVerified))
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={0} />
+                    </GridItem>
+                  );
+                })}
           </Grid>
         </TabPanel>
         <TabPanel>
@@ -223,13 +230,51 @@ const Admin = () => {
             gap={4}
           >
             {sysUsers &&
-              sysUsers.filter((sysUser:any) => sysUser.role == 2).map((sysUser: any, index: any) => {
-                return (
-                  <GridItem rowSpan={1} colSpan={1}>
-                    <CardComponent sysUser={sysUser} signal={0} />
-                  </GridItem>
-                );
-              })}
+              sysUsers
+                .filter((sysUser: any) => (sysUser.role == 2 && sysUser.isVerified))
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={0} />
+                    </GridItem>
+                  );
+                })}
+          </Grid>
+        </TabPanel>
+        <TabPanel>
+          <Grid
+            templateRows="repeat(2, 1fr)"
+            templateColumns="repeat(4, 1fr)"
+            gap={4}
+          >
+            {sysUsers &&
+              sysUsers
+                .filter((sysUser: any) => (sysUser.role == 4 && sysUser.isVerified))
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={0} />
+                    </GridItem>
+                  );
+                })}
+          </Grid>
+        </TabPanel>
+        <TabPanel>
+          <Grid
+            templateRows="repeat(2, 1fr)"
+            templateColumns="repeat(4, 1fr)"
+            gap={4}
+          >
+            {sysUsers &&
+              sysUsers
+                .filter((sysUser: any) => (sysUser.role == 1 && sysUser.isVerified))
+                .map((sysUser: any, index: any) => {
+                  return (
+                    <GridItem rowSpan={1} colSpan={1}>
+                      <CardComponent sysUser={sysUser} signal={0} />
+                    </GridItem>
+                  );
+                })}
           </Grid>
         </TabPanel>
       </TabPanels>
