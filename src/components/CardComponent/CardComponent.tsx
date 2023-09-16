@@ -47,10 +47,8 @@ const CardComponent = ({ sysUser, signal }) => {
       );
       const accounts = await provider.listAccounts();
       const currUserId = await contract.userEmailtoId(sysUser.email);
-      console.log("Curr UserId: " + currUserId);
       const tx = await contract.verifyUser(currUserId);
       await tx.wait();
-      console.log(tx);
       toast({
         title: "Registration approved! ",
         description: "Please refresh the page to see the results.",

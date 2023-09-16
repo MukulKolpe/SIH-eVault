@@ -150,8 +150,8 @@ const Form2 = ({ getDob, getGender, getProfile }) => {
     await fetch("https://api.nftport.xyz/v0/files", options)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        console.log(response.ipfs_url);
+        // console.log(response);
+        // console.log(response.ipfs_url);
         setIpfsUrl(response.ipfs_url);
 
         if (displayImage) {
@@ -184,7 +184,7 @@ const Form2 = ({ getDob, getGender, getProfile }) => {
   const handleDob = (e) => {
     getDob(e);
   };
-  console.log(ipfsUrl);
+  // console.log(ipfsUrl);
 
   getProfile(ipfsUrl);
   return (
@@ -363,8 +363,8 @@ const Form3 = ({ getLicense, getDegree }) => {
     await fetch("https://api.nftport.xyz/v0/files", options)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        console.log(response.ipfs_url);
+        // console.log(response);
+        // console.log(response.ipfs_url);
         setIpfsUrl(response.ipfs_url);
         if (displayImage) {
           toast({
@@ -553,7 +553,7 @@ export default function Multistep() {
       );
       const accounts = await provider.listAccounts();
 
-      console.log(contract);
+      // console.log(contract);
 
       let finalrole = 0;
       if (role === "Lawyer") {
@@ -577,7 +577,7 @@ export default function Multistep() {
         finalrole
       );
 
-      console.log(tx);
+      // console.log(tx);
     } else {
       const particleProvider = new ParticleProvider(particle.auth);
       const accounts = await particleProvider.request({
@@ -595,7 +595,7 @@ export default function Multistep() {
         signer
       );
 
-      console.log(contract);
+      // console.log(contract);
 
       let finalrole = 0;
       if (role === "Lawyer") {
@@ -619,7 +619,7 @@ export default function Multistep() {
         finalrole
       );
 
-      console.log(tx);
+      // console.log(tx);
     }
     //or get accounts with particleProvider
 

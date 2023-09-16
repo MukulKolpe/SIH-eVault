@@ -68,7 +68,7 @@ const Documents = () => {
 
           const doc = docResult; // Assuming that docIdtoDocument returns an array with the document at index 0.
           cases[id] = doc;
-          console.log(doc);
+          // console.log(doc);
         }
 
         setAllCases(cases);
@@ -80,7 +80,7 @@ const Documents = () => {
     fetchData();
   }, [caseNumber]);
 
-  console.log(allCases);
+  // console.log(allCases);
 
   return (
     <>
@@ -119,7 +119,7 @@ const Documents = () => {
       >
         {Object.keys(allCases).map((key) => {
           const document = allCases[key];
-          console.log(document);
+          // console.log(document);
 
           return (
             <GridItem key={document[0]} colSpan={1}>
