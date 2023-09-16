@@ -125,8 +125,8 @@ const Form2 = ({ getProfile }) => {
     await fetch("https://api.nftport.xyz/v0/files", options)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        console.log(response.ipfs_url);
+        // console.log(response);
+        // console.log(response.ipfs_url);
         setIpfsUrl(response.ipfs_url);
         if (displayImage) {
           toast({
@@ -350,7 +350,7 @@ export default function Multistep() {
       );
       const accounts = await provider.listAccounts();
 
-      console.log(contract);
+      // console.log(contract);
 
       const tx = contract.createUser(
         name,
@@ -365,7 +365,7 @@ export default function Multistep() {
         1
       );
 
-      console.log(tx);
+      // console.log(tx);
     } else {
       const particleProvider = new ParticleProvider(particle.auth);
       const accounts = await particleProvider.request({
@@ -383,7 +383,7 @@ export default function Multistep() {
         signer
       );
 
-      console.log(contract);
+      // console.log(contract);
 
       const tx = contract.createUser(
         name,
@@ -398,11 +398,11 @@ export default function Multistep() {
         1
       );
 
-      console.log(tx);
+      // console.log(tx);
     }
   };
 
-  console.log(adhar);
+  // console.log(adhar);
 
   return (
     <>

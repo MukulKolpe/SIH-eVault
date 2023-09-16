@@ -64,8 +64,8 @@ const UploadDocumentForm = () => {
     await fetch("https://api.nftport.xyz/v0/files", options)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
-        console.log(response.ipfs_url);
+        // console.log(response);
+        // console.log(response.ipfs_url);
         setIpfsUrl(response.ipfs_url);
         if (displayDocument) {
           toast({
@@ -102,8 +102,8 @@ const UploadDocumentForm = () => {
 
       const userid = await contract.userAddresstoId(accounts[0]);
 
-      console.log(accounts[0]);
-      console.log(contract);
+      // console.log(accounts[0]);
+      // console.log(contract);
       const tx = await contract.uploadDocument(
         documentName,
         documentDescription,
@@ -115,7 +115,7 @@ const UploadDocumentForm = () => {
         documentNumber,
         clientEmail
       );
-      console.log(tx);
+      // console.log(tx);
       await tx.wait();
       toast({
         title: "Document Uploaded.",
@@ -142,7 +142,7 @@ const UploadDocumentForm = () => {
         signer
       );
 
-      console.log(contract);
+      // console.log(contract);
       const userid = await contract.userAddresstoId(accounts[0]);
       const tx = await contract.uploadDocument(
         documentName,
@@ -164,7 +164,7 @@ const UploadDocumentForm = () => {
         position: "top-right",
       });
 
-      console.log(tx);
+      // console.log(tx);
     }
   };
   const [inputFields, setInputFields] = useState([{ value: "" }]);
@@ -218,7 +218,7 @@ const UploadDocumentForm = () => {
       );
     }
 
-    console.log(contract);
+    // console.log(contract);
     // iterate over inputFields and create an array of witnesses
     const witnessList = [];
     let s1 = 0;
@@ -257,7 +257,7 @@ const UploadDocumentForm = () => {
 
     // console.log(setWitnessArray(witnessList));
   };
-  console.log(witnessArray);
+  // console.log(witnessArray);
   return (
     <>
       <Box

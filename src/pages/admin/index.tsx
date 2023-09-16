@@ -60,13 +60,13 @@ const Admin = () => {
       ) {
         setLoader(true);
         const totalUsers = Number(await contract.userId());
-        console.log(totalUsers);
+        // console.log(totalUsers);
         // const userData = await contract.userIdtoUser(1);
         // console.log(userData);
         let userData;
         for (let i = 1; i < totalUsers; i++) {
           userData = await contract.userIdtoUser(i);
-          console.log(userData);
+          // console.log(userData);
           setSysUsers((prevState) => [...prevState, userData]);
         }
         await handleDocumentLoad();
@@ -92,11 +92,11 @@ const Admin = () => {
       const accounts = await provider.listAccounts();
       setUserWallet(accounts[0]);
       const totalDocs = Number(await contract.docId());
-      console.log("Total Documents: " + totalDocs);
+      // console.log("Total Documents: " + totalDocs);
       let docData;
       for (let i = 0; i < totalDocs; i++) {
         docData = await contract.docIdtoDocument(i);
-        console.log(docData);
+        // console.log(docData);
         setDocArray((prevState) => [
           ...prevState,
           { payload: docData, index: i },

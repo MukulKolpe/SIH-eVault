@@ -35,7 +35,6 @@ const DocumentCard = ({ doc, signal }) => {
       const accounts = await provider.listAccounts();
       const tx = await contract.markNotaryApproval(doc.index);
       await tx.wait();
-      console.log(tx);
       toast({
         title: "Document Notarized! ",
         description: "Document Approved by Notary Public",
