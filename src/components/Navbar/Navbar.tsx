@@ -157,7 +157,7 @@ export default function Navbar() {
                   display={{ base: "none", md: "flex" }}
                   marginRight={4}
                 >
-                  <Link href="/profile-page">
+                  <Link href="/profile">
                     <Button w="full" variant="ghost">
                       Profile
                     </Button>
