@@ -11,7 +11,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Card,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import LockSVG from "../../assets/lock-svgrepo-com.svg";
@@ -22,6 +21,16 @@ import documentabi from "../../utils/documentsideabi.json";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import CardComponent from "@/components/CardComponent/CardComponent";
 import SpinnerComponent from "../../components/Spinner/Spinner";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Text,
+  Box,
+  StackDivider,
+} from "@chakra-ui/react";
+import DocumentCard from "@/components/DocumentCardAdmin/DocumentCard";
 
 const Admin = () => {
   const [password, setPassword] = useState("");
@@ -30,6 +39,7 @@ const Admin = () => {
   const [userWallet, setUserWallet] = useState("");
   const [loader, setLoader] = useState(false);
   const [sysUsers, setSysUsers] = useState([]);
+  const [docArray, setDocArray] = useState([]);
 
   const handleClick = async (e: any) => {
     if (window.ethereum._state.accounts.length !== 0) {
@@ -59,6 +69,7 @@ const Admin = () => {
           console.log(userData);
           setSysUsers((prevState) => [...prevState, userData]);
         }
+        await handleDocumentLoad();
         setLoader(false);
         showCards(true);
       } else {
@@ -66,6 +77,31 @@ const Admin = () => {
       }
     } else {
       showError(true);
+    }
+  };
+
+  const handleDocumentLoad = async () => {
+    if (window.ethereum._state.accounts.length !== 0) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        signer
+      );
+      const accounts = await provider.listAccounts();
+      setUserWallet(accounts[0]);
+      const totalDocs = Number(await contract.docId());
+      console.log("Total Documents: " + totalDocs);
+      let docData;
+      for (let i = 0; i < totalDocs; i++) {
+        docData = await contract.docIdtoDocument(i);
+        console.log(docData);
+        setDocArray((prevState) => [
+          ...prevState,
+          { payload: docData, index: i },
+        ]);
+      }
     }
   };
 
@@ -141,7 +177,7 @@ const Admin = () => {
   }
 
   return (
-    <Tabs variant="enclosed">
+    <Tabs>
       <TabList>
         <Tab>All</Tab>
         <Tab>Unverified</Tab>
@@ -149,8 +185,8 @@ const Admin = () => {
         <Tab>Judges</Tab>
         <Tab>Lawyer</Tab>
         <Tab>Officials</Tab>
-        <Tab> Other Users</Tab>
-
+        <Tab>Other Users</Tab>
+        <Tab>Documents</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -213,7 +249,9 @@ const Admin = () => {
           >
             {sysUsers &&
               sysUsers
-                .filter((sysUser: any) => (sysUser.role == 3 && sysUser.isVerified))
+                .filter(
+                  (sysUser: any) => sysUser.role == 3 && sysUser.isVerified
+                )
                 .map((sysUser: any, index: any) => {
                   return (
                     <GridItem rowSpan={1} colSpan={1}>
@@ -231,7 +269,9 @@ const Admin = () => {
           >
             {sysUsers &&
               sysUsers
-                .filter((sysUser: any) => (sysUser.role == 2 && sysUser.isVerified))
+                .filter(
+                  (sysUser: any) => sysUser.role == 2 && sysUser.isVerified
+                )
                 .map((sysUser: any, index: any) => {
                   return (
                     <GridItem rowSpan={1} colSpan={1}>
@@ -249,7 +289,9 @@ const Admin = () => {
           >
             {sysUsers &&
               sysUsers
-                .filter((sysUser: any) => (sysUser.role == 4 && sysUser.isVerified))
+                .filter(
+                  (sysUser: any) => sysUser.role == 4 && sysUser.isVerified
+                )
                 .map((sysUser: any, index: any) => {
                   return (
                     <GridItem rowSpan={1} colSpan={1}>
@@ -267,7 +309,9 @@ const Admin = () => {
           >
             {sysUsers &&
               sysUsers
-                .filter((sysUser: any) => (sysUser.role == 1 && sysUser.isVerified))
+                .filter(
+                  (sysUser: any) => sysUser.role == 1 && sysUser.isVerified
+                )
                 .map((sysUser: any, index: any) => {
                   return (
                     <GridItem rowSpan={1} colSpan={1}>
@@ -276,6 +320,70 @@ const Admin = () => {
                   );
                 })}
           </Grid>
+        </TabPanel>
+        <TabPanel>
+          <Tabs variant="soft-rounded" align="center">
+            <TabList>
+              <Tab>All</Tab>
+              <Tab>Verified</Tab>
+              <Tab>Unverified</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Grid
+                  templateRows="repeat(2, 1fr)"
+                  templateColumns="repeat(4, 1fr)"
+                  gap={4}
+                >
+                  {docArray &&
+                    docArray.map((doc: any, index: any) => {
+                      return (
+                        <GridItem rowSpan={1} colSpan={1}>
+                          <DocumentCard doc={doc} signal={0}/>
+                        </GridItem>
+                      );
+                    })}
+                </Grid>
+              </TabPanel>
+              <TabPanel>
+                {" "}
+                <Grid
+                  templateRows="repeat(2, 1fr)"
+                  templateColumns="repeat(4, 1fr)"
+                  gap={4}
+                >
+                  {docArray &&
+                    docArray
+                      .filter((doc) => doc.payload.approval2)
+                      .map((doc: any, index: any) => {
+                        return (
+                          <GridItem rowSpan={1} colSpan={1}>
+                            <DocumentCard doc={doc} signal={0}/>
+                          </GridItem>
+                        );
+                      })}
+                </Grid>
+              </TabPanel>
+              <TabPanel>
+                <Grid
+                  templateRows="repeat(2, 1fr)"
+                  templateColumns="repeat(4, 1fr)"
+                  gap={4}
+                >
+                  {docArray &&
+                    docArray
+                      .filter((doc) => (doc.payload.approval1 && !doc.payload.approval2))
+                      .map((doc: any, index: any) => {
+                        return (
+                          <GridItem rowSpan={1} colSpan={1}>
+                            <DocumentCard doc={doc} signal={1}/>
+                          </GridItem>
+                        );
+                      })}
+                </Grid>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </TabPanel>
       </TabPanels>
     </Tabs>
