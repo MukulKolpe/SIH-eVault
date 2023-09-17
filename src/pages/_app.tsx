@@ -4,6 +4,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import WagmiProvider from "../utils/wagmiprovider";
 import Navbar from "@/components/Navbar/Navbar";
 import Footer from "@/components/Footer/Footer";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 export default function App({ Component, pageProps }: AppProps) {
   const colors = {
     brand: {
@@ -27,20 +28,25 @@ export default function App({ Component, pageProps }: AppProps) {
   const theme = extendTheme({ colors, config });
 
   return (
-    <WagmiProvider>
-      <ChakraProvider theme={theme}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
-          }}
-        >
-          <Navbar />
-          <Component {...pageProps} />
-          <Footer />
-        </div>
-      </ChakraProvider>
-    </WagmiProvider>
+    <ThirdwebProvider
+      activeChain="ethereum"
+      clientId="25c8d3752c1fd18e50467a0ba3761277"
+    >
+      <WagmiProvider>
+        <ChakraProvider theme={theme}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "100vh",
+            }}
+          >
+            <Navbar />
+            <Component {...pageProps} />
+            <Footer />
+          </div>
+        </ChakraProvider>
+      </WagmiProvider>
+    </ThirdwebProvider>
   );
 }
