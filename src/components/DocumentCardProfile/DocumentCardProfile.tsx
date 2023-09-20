@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import documentabi from "../../utils/documentsideabi.json";
 import { ethers } from "ethers";
+import { useToast } from "@chakra-ui/react";
+import { ParticleProvider } from "@particle-network/provider";
 
 function DocumentCardProfile({
   title,
@@ -22,6 +24,7 @@ function DocumentCardProfile({
   userid,
   docsid,
 }) {
+  const toast = useToast();
   const docsApproval = async () => {
     let contract;
     if (window.ethereum._state.accounts.length !== 0) {
@@ -32,12 +35,32 @@ function DocumentCardProfile({
         documentabi,
         signer
       );
-      const witnessApproval = await contract.markWitnessApproval(
-        userid,
-        docsid
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth, "any");
+      const accounts = particleProvider.request({
+        method: "eth_accounts",
+      });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
       );
-      console.log(witnessApproval);
+      const pSigner = ethersProvider.getSigner();
+      contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        pSigner
+      );
     }
+    const witnessApproval = await contract.markWitnessApproval(userid, docsid);
+    console.log(witnessApproval);
+    await witnessApproval.wait();
+    toast({
+      title: "Document Approved! ",
+      description: "You've successfully approved the document.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
   };
   useEffect(() => {
     console.log(docsid, userid);
