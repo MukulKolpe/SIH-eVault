@@ -31,6 +31,7 @@ import documentabi from "../../utils/documentsideabi.json";
 import { useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import DocumentCardProfile from "../../components/DocumentCardProfile/DocumentCardProfile";
+import { ParticleProvider } from "@particle-network/provider";
 
 const DocsAwaitingApproval = () => {
   const [length, setLength] = useState();
@@ -76,6 +77,46 @@ const DocsAwaitingApproval = () => {
       setDocs(docs);
       //   const witnessApproval = await contract.markWitnessApproval(userid, docId);
       //   console.log(witnessApproval);
+    } else {
+      const particleProvider = new ParticleProvider(particle.auth);
+      // const accounts = particleProvider.request({
+      //   method: "eth_accounts",
+      // });
+      const ethersProvider = new ethers.providers.Web3Provider(
+        particleProvider,
+        "any"
+      );
+      const pSigner = ethersProvider.getSigner();
+      contract = new ethers.Contract(
+        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
+        documentabi,
+        pSigner
+      );
+      const accounts = await ethersProvider.listAccounts();
+      const userid = await contract.userAddresstoId(accounts[0]);
+      console.log(contract);
+      console.log(userid.toNumber);
+      setUserId(userid.toNumber());
+
+      const witnessArraylength = await contract.getWitnessArrayLengthforUser(
+        userid
+      );
+      const l = witnessArraylength.toNumber();
+      setLength(l);
+      console.log(witnessArraylength.toNumber());
+      const docs = {};
+
+      for (let i = 0; i < l; i++) {
+        const docid = await contract.userIdtodocIdWitness(userid, i);
+        console.log(docid.toNumber());
+        const id = docid.toNumber();
+        const docResult = await contract.docIdtoDocument(id);
+
+        const doc = docResult; // Assuming that docIdtoDocument returns an array with the document at index 0.
+        docs[id] = doc;
+        setDocId(id);
+      }
+      setDocs(docs);
     }
   };
 
@@ -83,7 +124,7 @@ const DocsAwaitingApproval = () => {
 
   useEffect(() => {
     displayDocsAwaitingApproval();
-  }, [length]);
+  }, [length > 0]);
   return (
     <>
       <Heading mt={10} padding={6}>
