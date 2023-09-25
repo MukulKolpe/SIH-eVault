@@ -32,6 +32,8 @@ import { useToast } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import DocumentCardProfile from "../../components/DocumentCardProfile/DocumentCardProfile";
 import { ParticleProvider } from "@particle-network/provider";
+import requestabi from "../../utils/requestsideabi.json";
+import { request } from "http";
 
 const DocsAwaitingApproval = () => {
   const [length, setLength] = useState();
@@ -46,8 +48,8 @@ const DocsAwaitingApproval = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();
@@ -88,8 +90,8 @@ const DocsAwaitingApproval = () => {
       );
       const pSigner = ethersProvider.getSigner();
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         pSigner
       );
       const accounts = await ethersProvider.listAccounts();

@@ -27,18 +27,19 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import documentabi from "../../utils/documentsideabi.json";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
+import requestabi from "../../utils/requestsideabi.json";
 export default function Navbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address, isConnected } = useAccount();
-  const [role, setRole] = useState("1");
+  const [role, setRole] = useState(-1);
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     let contract;
     if (window.ethereum._state.accounts.length !== 0) {
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
     } else {
@@ -53,8 +54,8 @@ export default function Navbar() {
       const pSigner = ethersProvider.getSigner();
 
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         pSigner
       );
     }
@@ -136,7 +137,7 @@ export default function Navbar() {
                   </Link>
                 </HStack>
               ) : null}
-              {role === 2 || role === 5 || role === 3 ? (
+              {role > 1 ? (
                 <HStack
                   as={"nav"}
                   spacing={4}
@@ -150,7 +151,7 @@ export default function Navbar() {
                   </Link>
                 </HStack>
               ) : null}
-              {role === 2 || role === 1 || role === 3 ? (
+              {role > 0 ? (
                 <HStack
                   as={"nav"}
                   spacing={4}
@@ -164,7 +165,7 @@ export default function Navbar() {
                   </Link>
                 </HStack>
               ) : null}
-              {role === 3 || role === 4 ? (
+              {role > 2 ? (
                 <HStack
                   as={"nav"}
                   spacing={4}

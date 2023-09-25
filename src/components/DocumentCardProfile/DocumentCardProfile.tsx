@@ -13,6 +13,7 @@ import documentabi from "../../utils/documentsideabi.json";
 import { ethers } from "ethers";
 import { useToast } from "@chakra-ui/react";
 import { ParticleProvider } from "@particle-network/provider";
+import requestabi from "../../utils/requestsideabi.json";
 
 function DocumentCardProfile({
   title,
@@ -31,8 +32,8 @@ function DocumentCardProfile({
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
     } else {
@@ -46,8 +47,8 @@ function DocumentCardProfile({
       );
       const pSigner = ethersProvider.getSigner();
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         pSigner
       );
     }

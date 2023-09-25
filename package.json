@@ -17,6 +17,7 @@
     "@metamask/detect-provider": "^2.0.0",
     "@particle-network/rainbowkit-ext": "^1.1.0",
     "@rainbow-me/rainbowkit": "^1.0.11",
+    "@thirdweb-dev/react": "^3.14.41",
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",

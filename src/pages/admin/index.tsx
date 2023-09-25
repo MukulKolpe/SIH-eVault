@@ -31,6 +31,8 @@ import {
   StackDivider,
 } from "@chakra-ui/react";
 import DocumentCard from "@/components/DocumentCardAdmin/DocumentCard";
+import { FormErrorMessage, FormHelperText } from "@chakra-ui/react";
+import requestabi from "../../utils/requestsideabi.json";
 
 const Admin = () => {
   const [password, setPassword] = useState("");
@@ -46,8 +48,8 @@ const Admin = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();
@@ -85,8 +87,8 @@ const Admin = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();
@@ -187,6 +189,7 @@ const Admin = () => {
         <Tab>Officials</Tab>
         <Tab>Other Users</Tab>
         <Tab>Documents</Tab>
+        <Tab>Manage Access</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -339,7 +342,7 @@ const Admin = () => {
                     docArray.map((doc: any, index: any) => {
                       return (
                         <GridItem rowSpan={1} colSpan={1}>
-                          <DocumentCard doc={doc} signal={0}/>
+                          <DocumentCard doc={doc} signal={0} />
                         </GridItem>
                       );
                     })}
@@ -358,7 +361,7 @@ const Admin = () => {
                       .map((doc: any, index: any) => {
                         return (
                           <GridItem rowSpan={1} colSpan={1}>
-                            <DocumentCard doc={doc} signal={0}/>
+                            <DocumentCard doc={doc} signal={0} />
                           </GridItem>
                         );
                       })}
@@ -372,11 +375,13 @@ const Admin = () => {
                 >
                   {docArray &&
                     docArray
-                      .filter((doc) => (doc.payload.approval1 && !doc.payload.approval2))
+                      .filter(
+                        (doc) => doc.payload.approval1 && !doc.payload.approval2
+                      )
                       .map((doc: any, index: any) => {
                         return (
                           <GridItem rowSpan={1} colSpan={1}>
-                            <DocumentCard doc={doc} signal={1}/>
+                            <DocumentCard doc={doc} signal={1} />
                           </GridItem>
                         );
                       })}
@@ -384,6 +389,13 @@ const Admin = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
+        </TabPanel>
+        <TabPanel>
+          <FormControl>
+            <FormLabel>Email address</FormLabel>
+            <Input type="email" />
+            <FormHelperText>We'll never share your email.</FormHelperText>
+          </FormControl>
         </TabPanel>
       </TabPanels>
     </Tabs>
