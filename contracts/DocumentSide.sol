@@ -4,6 +4,7 @@ import "./UserSide.sol";
 
 contract DocumentSide is UserSide{
     struct Document{
+        uint256 documentId;
         string docTitle;
         string docSubject;
         string ipfsHash;
@@ -25,6 +26,7 @@ contract DocumentSide is UserSide{
     mapping (uint256=> uint256[]) public userIdtodocIdWitness;
     mapping (uint256=> uint256[]) public userIdtodocIdViewAccess;
     mapping (string=> uint256[]) public caseNumbertoDocId;
+    mapping (uint256=> uint256[]) public userIdtoDocIdUploaded;
 
 
     constructor(){
@@ -40,7 +42,7 @@ contract DocumentSide is UserSide{
         User memory u1 = userIdtoUser[_userId];
         require(u1.role != 1,"Only Lawyers, Judge and Governmnet officials can upload documents");
         require(u1.isVerified == true,"Only Verified user can upload");
-        Document memory d1 = Document(_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner,_caseNumber,_clientEmail);
+        Document memory d1 = Document(docId,_docTitle,_docSubject,_ipfsHash,_userId,false,false,false,_docOwner,_caseNumber,_clientEmail);
         docIdtoWitnessArray[docId] = _witnesses;
         docIdtoWitnessArray2[docId] = _witnesses;
         docIdtoViewAccessArray[docId] = _viewAccess;
@@ -52,6 +54,7 @@ contract DocumentSide is UserSide{
         }
         docIdtoDocument[docId] = d1;
         caseNumbertoDocId[_caseNumber].push(docId);
+        userIdtoDocIdUploaded[_userId].push(docId);
         docId++; 
     }
 

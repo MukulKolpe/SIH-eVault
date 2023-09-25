@@ -15,6 +15,7 @@ contract UserSide{
     // approval2 : Notary public approval
 
     struct User {
+        uint256 userIdstruct;
         string name;
         string imageURL;
         string dob;
@@ -41,7 +42,7 @@ contract UserSide{
     }
 
     function createUser (string memory _name,string memory _imageURL,string memory _dob,address _userAddress,string memory _licenseNum,string memory _aadharNum,string memory _degreeURL,string memory _gender,string memory _email,uint256 _role) public {
-        User memory u1 = User(_name,_imageURL,_dob,_userAddress,_licenseNum,_aadharNum,_degreeURL,false,_gender,_email,_role);
+        User memory u1 = User(userId,_name,_imageURL,_dob,_userAddress,_licenseNum,_aadharNum,_degreeURL,false,_gender,_email,_role);
         require(userEmailtoId[_email] == 0,"This email is already registered into the system");
         require(userAddresstoId[_userAddress] == 0,"This wallet address is already registered into the system");
         userIdtoUser[userId] = u1;
@@ -56,4 +57,9 @@ contract UserSide{
         require((msg.sender == admin || msg.sender == 0x12d0Ad7d21bdbe7E05AB0aDd973C58fB48b52Ae5 || msg.sender == 0xc35fC43ae078961BfC34FfB6c2148571b6f87920) ,"Only admin can access this function");
         userIdtoUser[_userId].isVerified = true;
     } 
+
+    function updateUser(address _userAddress,string memory _imageURL) public {
+        uint256 tempId = userAddresstoId[_userAddress];
+        userIdtoUser[tempId].imageURL = _imageURL;
+    }
 }
