@@ -18,6 +18,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
+import requestabi from "../../utils/requestsideabi.json";
 
 const Documents = () => {
   const [length, setLength] = useState();
@@ -30,8 +31,8 @@ const Documents = () => {
     let contract;
     if (window.ethereum._state.accounts.length !== 0) {
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
     } else {
@@ -46,8 +47,8 @@ const Documents = () => {
       const pSigner = ethersProvider.getSigner();
 
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         pSigner
       );
     }

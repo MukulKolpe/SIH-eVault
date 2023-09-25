@@ -35,6 +35,7 @@ import { ethers } from "ethers";
 import { ParticleProvider } from "@particle-network/provider";
 import { useSigner } from "wagmi";
 import documentabi from "../../utils/documentsideabi.json";
+import requestabi from "../../utils/requestsideabi.json";
 
 const UploadDocumentForm = () => {
   const toast = useToast();
@@ -94,8 +95,8 @@ const UploadDocumentForm = () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();
@@ -137,8 +138,8 @@ const UploadDocumentForm = () => {
       const signer = ethersProvider.getSigner();
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
 
@@ -196,8 +197,8 @@ const UploadDocumentForm = () => {
     let contract;
     if (window.ethereum._state.accounts.length !== 0) {
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
     } else {
@@ -212,8 +213,8 @@ const UploadDocumentForm = () => {
       const pSigner = ethersProvider.getSigner();
 
       contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         pSigner
       );
     }

@@ -19,6 +19,7 @@ import { ParticleProvider } from "@particle-network/provider";
 import { useSigner } from "wagmi";
 import { useToast } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
+import requestabi from "../../utils/requestsideabi.json"
 
 const DocumentCard = ({ doc, signal }) => {
   const toast = useToast();
@@ -28,8 +29,8 @@ const DocumentCard = ({ doc, signal }) => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();

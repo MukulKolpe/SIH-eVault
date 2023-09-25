@@ -37,6 +37,7 @@ import {
 import { useToast } from "@chakra-ui/react";
 import { stringify } from "querystring";
 import { Clicker_Script } from "next/font/google";
+import requestabi from "../../utils/requestsideabi.json";
 
 const Form1 = ({ getEmail, getName, getDob }) => {
   const [show, setShow] = React.useState(false);
@@ -344,8 +345,8 @@ export default function Multistep() {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
       const accounts = await provider.listAccounts();
@@ -378,8 +379,8 @@ export default function Multistep() {
       const signer = ethersProvider.getSigner();
 
       const contract = new ethers.Contract(
-        process.env.NEXT_PUBLIC_DOCUMENTSIDE_ADDRESS,
-        documentabi,
+        process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+        requestabi,
         signer
       );
 
