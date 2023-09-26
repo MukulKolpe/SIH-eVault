@@ -19,10 +19,12 @@ import { ParticleProvider } from "@particle-network/provider";
 import { useSigner } from "wagmi";
 import { useToast } from "@chakra-ui/react";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import requestabi from "../../utils/requestsideabi.json"
+import requestabi from "../../utils/requestsideabi.json";
+import { useRouter } from "next/router";
 
 const DocumentCard = ({ doc, signal }) => {
   const toast = useToast();
+  const router = useRouter();
 
   const handleDocumentApproval = async () => {
     if (window.ethereum._state.accounts.length !== 0) {
@@ -43,6 +45,7 @@ const DocumentCard = ({ doc, signal }) => {
         duration: 9000,
         isClosable: true,
       });
+      router.reload();
     }
   };
 
