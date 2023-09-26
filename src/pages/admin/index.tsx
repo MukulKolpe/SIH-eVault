@@ -33,6 +33,7 @@ import {
 import DocumentCard from "@/components/DocumentCardAdmin/DocumentCard";
 import { FormErrorMessage, FormHelperText } from "@chakra-ui/react";
 import requestabi from "../../utils/requestsideabi.json";
+import { useRouter } from 'next/router'
 
 const Admin = () => {
   const [password, setPassword] = useState("");
@@ -42,6 +43,7 @@ const Admin = () => {
   const [loader, setLoader] = useState(false);
   const [sysUsers, setSysUsers] = useState([]);
   const [docArray, setDocArray] = useState([]);
+  const router = useRouter();
 
   const handleClick = async (e: any) => {
     if (window.ethereum._state.accounts.length !== 0) {
