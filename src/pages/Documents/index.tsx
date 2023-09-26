@@ -123,15 +123,15 @@ const Documents = () => {
           // console.log(document);
 
           return (
-            <GridItem key={document[0]} colSpan={1}>
+            <GridItem key={document[1]} colSpan={1}>
               <DocumentCard
-                key={document[0]}
-                title={document[0]}
-                description={document[1]}
-                link={document[2]}
-                stakeholder={document[4]}
-                notary={document[5]}
-                final={document[6]}
+                key={document[1]}
+                title={document[1]}
+                description={document[2]}
+                link={document[3]}
+                stakeholder={document[5]}
+                notary={document[6]}
+                final={document[7]}
               />
             </GridItem>
           );
