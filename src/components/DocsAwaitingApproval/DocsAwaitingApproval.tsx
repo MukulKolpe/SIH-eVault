@@ -55,7 +55,7 @@ const DocsAwaitingApproval = () => {
       const accounts = await provider.listAccounts();
       const userid = await contract.userAddresstoId(accounts[0]);
       console.log(contract);
-      console.log(userid.toNumber);
+      console.log(userid.toNumber());
       setUserId(userid.toNumber());
 
       const witnessArraylength = await contract.getWitnessArrayLengthforUser(
@@ -70,7 +70,7 @@ const DocsAwaitingApproval = () => {
         const docid = await contract.userIdtodocIdWitness(userid, i);
         console.log(docid.toNumber());
         const id = docid.toNumber();
-        const docResult = await contract.docIdtoDocument(id);
+        const docResult = await contract.docIdtoDocument(docid);
 
         const doc = docResult; // Assuming that docIdtoDocument returns an array with the document at index 0.
         docs[id] = doc;
@@ -97,7 +97,7 @@ const DocsAwaitingApproval = () => {
       const accounts = await ethersProvider.listAccounts();
       const userid = await contract.userAddresstoId(accounts[0]);
       console.log(contract);
-      console.log(userid.toNumber);
+      console.log(userid.toNumber());
       setUserId(userid.toNumber());
 
       const witnessArraylength = await contract.getWitnessArrayLengthforUser(
@@ -112,7 +112,7 @@ const DocsAwaitingApproval = () => {
         const docid = await contract.userIdtodocIdWitness(userid, i);
         console.log(docid.toNumber());
         const id = docid.toNumber();
-        const docResult = await contract.docIdtoDocument(id);
+        const docResult = await contract.docIdtoDocument(docid);
 
         const doc = docResult; // Assuming that docIdtoDocument returns an array with the document at index 0.
         docs[id] = doc;
@@ -148,14 +148,14 @@ const DocsAwaitingApproval = () => {
             <GridItem key={key} colSpan={1}>
               <DocumentCardProfile
                 key={key}
-                title={document[0]}
-                description={document[1]}
-                link={document[2]}
-                stakeholder={document[4]}
-                notary={document[5]}
+                title={document[1]}
+                description={document[2]}
+                link={document[3]}
+                stakeholder={document[5]}
+                notary={document[6]}
                 userid={userId}
                 docsid={docId}
-                final={document[6]}
+                final={document[7]}
               />
             </GridItem>
           );

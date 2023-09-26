@@ -57,7 +57,8 @@ function Profile() {
         signer
       );
       const accounts = await provider.listAccounts();
-      const userInfo = await contract.userAddresstoUser(accounts[0]);
+      const tempUserId = await contract.userAddresstoId(accounts[0]);
+      const userInfo = await contract.userIdtoUser(BigInt(tempUserId));
       setUserAddress(accounts[0]);
       console.log(userInfo);
       setName(userInfo.name);
@@ -88,6 +89,24 @@ function Profile() {
     if (!profileModal) {
       setProfileModal(true);
     } else {
+      if (window.ethereum._state.accounts.length !== 0) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          process.env.NEXT_PUBLIC_REQUESTSIDE_ADDRESS,
+          requestabi,
+          signer
+        );
+        const tx = await contract.updateUser(userAddress, ipfsUrl);
+        await tx.wait();
+        toast({
+          title: "Profile Picture Updated! ",
+          description: "Refresh Page to view changes",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
       setProfileModal(false);
     }
   };
