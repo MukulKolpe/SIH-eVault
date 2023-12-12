@@ -1,6 +1,6 @@
 # eVault for legal records
 
-## Architecture
+## Architecture:
 
 ![image](https://github.com/MukulKolpe/SIH-eVault/assets/78664749/081d2610-d3ba-49f7-bef5-ac4a19e706df)
 
